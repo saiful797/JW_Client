@@ -113,7 +113,7 @@ const HomePage = () => {
                             </td>
                             <th className="border-2 border-yellow-500 text-center">
                                 <div className="flex justify-evenly">
-                                    <Link className="cursor-pointer bg-green-50 py-1 px-2 text-green-500 badge badge-outline">
+                                    <Link to={`/update-stock/${stock._id}`} className="cursor-pointer bg-green-50 py-1 px-2 text-green-500 badge badge-outline">
                                         Update
                                     </Link>
                                     <Link 
