@@ -1,9 +1,37 @@
 import { ScaleLoader } from "react-spinners";
 import useStock from "../../Hooks/useStock";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const HomePage = () => {
     const [ stocks, refetch ] = useStock();
+
+    // handle stocks Delete
+    const handleStocksDelete = ( id ) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to delete this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+          }).then( async (result) => {
+            if (result.isConfirmed) {
+                const res = await axios.delete(`${import.meta.env.VITE_SECURE_API}/specific-stock-delete/${id}`);
+                if(res.data.deletedCount > 0)
+                {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                    refetch();
+                }
+            }
+          });
+    }
     return (
         <div className="min-h-screen">
             {
@@ -16,10 +44,12 @@ const HomePage = () => {
                 </div>
             }
             {
-                stocks.length > 0 && <div className="overflow-x-auto">
-                <div className="my-3">
+                stocks.length > 0 && <div className="my-3">
                     <p className="text-center font-bold text-yellow-500">Total Stocks: {stocks.length}</p>
                 </div>
+            }
+            {
+                stocks.length > 0 && <div className="overflow-x-auto">
                 <table className="table table-zebra">
                     {/* head */}
                     <thead className="rounded-t-2xl">
@@ -82,11 +112,14 @@ const HomePage = () => {
                                 {stock.volume}
                             </td>
                             <th className="border-2 border-yellow-500 text-center">
-                                <div className="flex justify-between">
+                                <div className="flex justify-evenly">
                                     <Link className="cursor-pointer bg-green-50 py-1 px-2 text-green-500 badge badge-outline">
                                         Update
                                     </Link>
-                                    <Link className="cursor-pointer bg-re-50 py-1 px-2 text-red-500 badge badge-outline">
+                                    <Link 
+                                        onClick={() => handleStocksDelete(stock._id)}
+                                        className="cursor-pointer bg-red-50 py-1 px-2 text-red-500 badge badge-outline"
+                                    >
                                         Delete
                                     </Link>
                                 </div>
