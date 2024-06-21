@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
 import HomePage from "../Pages/Home/HomePage";
+import DataTable from "../Pages/DataTable/DataTable";
 
 export const router = createBrowserRouter([
     {
@@ -8,8 +9,12 @@ export const router = createBrowserRouter([
       element: <Main />,
       children:[
         {
-            path: '/',
-            element: <HomePage />
+          path: '/',
+          element: <HomePage />
+        },
+        {
+          path:"/data-table",
+          element: <DataTable />
         }
       ]
     },
